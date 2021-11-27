@@ -1,0 +1,195 @@
+fileFormatVersion: 2
+guid: c505ac13afc57ba428e3ebe421e31d6a
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: LiftedCorner
+    100002: //RootNode
+    100004: Roof_balcony_collumn
+    100006: Roof_top
+    100008: Roof_top_corner
+    100010: Roof_top_flat
+    100012: Roof_top_side
+    100014: RoofTop
+    100016: Tunnel
+    100018: Wall
+    100020: Wall_3_sided
+    100022: Wall_back
+    100024: WallAngled
+    100026: WallAngled_no_Side
+    100028: WallAngled_no_Sides
+    100030: WallAngled_withSide
+    100032: WallCorneAngled
+    100034: WallCorner
+    100036: Walled
+    100038: Walled_roofTop
+    400000: LiftedCorner
+    400002: //RootNode
+    400004: Roof_balcony_collumn
+    400006: Roof_top
+    400008: Roof_top_corner
+    400010: Roof_top_flat
+    400012: Roof_top_side
+    400014: RoofTop
+    400016: Tunnel
+    400018: Wall
+    400020: Wall_3_sided
+    400022: Wall_back
+    400024: WallAngled
+    400026: WallAngled_no_Side
+    400028: WallAngled_no_Sides
+    400030: WallAngled_withSide
+    400032: WallCorneAngled
+    400034: WallCorner
+    400036: Walled
+    400038: Walled_roofTop
+    2100000: Modular_Outpost_material
+    2300000: LiftedCorner
+    2300002: Roof_balcony_collumn
+    2300004: Roof_top
+    2300006: Roof_top_corner
+    2300008: Roof_top_flat
+    2300010: Roof_top_side
+    2300012: RoofTop
+    2300014: Tunnel
+    2300016: Wall
+    2300018: Wall_3_sided
+    2300020: Wall_back
+    2300022: WallAngled
+    2300024: WallAngled_no_Side
+    2300026: WallAngled_no_Sides
+    2300028: WallAngled_withSide
+    2300030: WallCorneAngled
+    2300032: WallCorner
+    2300034: Walled
+    2300036: Walled_roofTop
+    3300000: LiftedCorner
+    3300002: Roof_balcony_collumn
+    3300004: Roof_top
+    3300006: Roof_top_corner
+    3300008: Roof_top_flat
+    3300010: Roof_top_side
+    3300012: RoofTop
+    3300014: Tunnel
+    3300016: Wall
+    3300018: Wall_3_sided
+    3300020: Wall_back
+    3300022: WallAngled
+    3300024: WallAngled_no_Side
+    3300026: WallAngled_no_Sides
+    3300028: WallAngled_withSide
+    3300030: WallCorneAngled
+    3300032: WallCorner
+    3300034: Walled
+    3300036: Walled_roofTop
+    4300000: RoofTop
+    4300002: Wall_back
+    4300004: WallCorner
+    4300006: WallAngled
+    4300008: Walled
+    4300010: Tunnel
+    4300012: Roof_top_flat
+    4300014: Wall
+    4300016: Wall_3_sided
+    4300018: LiftedCorner
+    4300020: Roof_top_corner
+    4300022: Roof_top
+    4300024: Roof_top_side
+    4300026: Roof_balcony_collumn
+    4300028: Walled_roofTop
+    4300030: WallAngled_no_Side
+    4300032: WallAngled_no_Sides
+    4300034: WallAngled_withSide
+    4300036: WallCorneAngled
+    9500000: //RootNode
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Modular_Outpost_material
+    second: {fileID: 2100000, guid: f0b56ef8f49ed8944bbb01d30659b13c, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

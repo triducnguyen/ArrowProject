@@ -5,6 +5,10 @@ public class Quiver : XRBaseInteractable
 {
     public GameObject arrowPrefab = null;
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     protected override void OnEnable()
     {
         base.OnEnable();
