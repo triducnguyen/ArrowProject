@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Hand
+  - Enemy
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - PostProcessing
   - Character
   - Arrow
-  - 
-  - 
+  - Ground
+  - Player
   - 
   - 
   - 
