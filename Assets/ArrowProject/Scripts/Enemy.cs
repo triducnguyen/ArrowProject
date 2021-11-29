@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
     bool walkPointSet;
     public float walkPointRange;
 
-    bool getAttacked;
+    bool getAttacked,alreadyAttack;
 
     //States
     public float sightRange, attackRange;
@@ -40,7 +40,6 @@ public class Enemy : MonoBehaviour
         health = maxHealth;
         slider.value = CalculateHealth();
         healthBarUI.SetActive(false);
-
     }
 
     private void FixedUpdate()
@@ -51,15 +50,15 @@ public class Enemy : MonoBehaviour
 
             healthBarUI.SetActive(false);
             StartCoroutine(StartDieAnimation());
-
+            agent.isStopped = true;
         }  
         //Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-        if (!playerInSightRange && !playerInAttackRange) Patroling();
-        if ((playerInSightRange && !playerInAttackRange) || getAttacked) ChasePlayer();
         if (playerInAttackRange && playerInSightRange) AttackPlayer();
+        else if ((playerInSightRange && !playerInAttackRange) || getAttacked) ChasePlayer();
+        else if (!playerInSightRange && !playerInAttackRange) Patroling();
 
         slider.value = CalculateHealth();
 
@@ -138,7 +137,22 @@ public class Enemy : MonoBehaviour
         agent.SetDestination(transform.position);
 
         transform.LookAt(player);
-        PlayAnim("Attack");
+        if (!alreadyAttack)
+        {
+            PlayAnim("Attack");
+            alreadyAttack = true;
+            Invoke(nameof(ResetAttack), 1f);
+
+        }
+        else
+        {
+            PlayAnim("Idle");
+        }
+    }
+
+    private void ResetAttack()
+    {
+        alreadyAttack = false;
     }
 
     public void TakeDamage(int damage)

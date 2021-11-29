@@ -37,5 +37,4 @@ public class Player : MonoBehaviour
         playerState = (health <= 0) ?  States.Die : States.Alive;      
     }
 
-
 }
