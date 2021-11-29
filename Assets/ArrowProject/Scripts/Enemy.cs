@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
     public enum EnemyStates { Idle,Attack,Die}
     [Header("Settings")]
     public float health;
+    public float maxHealth;
     public float hitDamage;
     public EnemyStates states;
     public Animator animator;
+    public GameObject healthBarUI;
+    public Slider slider;
 
     [Header("AI")]
     public NavMeshAgent agent;
@@ -22,6 +26,7 @@ public class Enemy : MonoBehaviour
     bool walkPointSet;
     public float walkPointRange;
 
+    bool getAttacked;
 
     //States
     public float sightRange, attackRange;
@@ -32,32 +37,58 @@ public class Enemy : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        health = maxHealth;
+        slider.value = CalculateHealth();
+        healthBarUI.SetActive(false);
+
     }
 
     private void FixedUpdate()
     {
+        CheckHealth();
         if(states == EnemyStates.Die)
         {
-            PlayAnim("Die");
-            DestroyEnemy();
+
+            healthBarUI.SetActive(false);
+            StartCoroutine(StartDieAnimation());
+
         }  
         //Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
         if (!playerInSightRange && !playerInAttackRange) Patroling();
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+        if ((playerInSightRange && !playerInAttackRange) || getAttacked) ChasePlayer();
         if (playerInAttackRange && playerInSightRange) AttackPlayer();
+
+        slider.value = CalculateHealth();
+
     }
+
 
     public IEnumerator Transition()
     {
         yield return new WaitForSeconds(4f);
+        walkPointSet = true;
     }
+
+    public IEnumerator StartDieAnimation()
+    {
+        PlayAnim("Die");
+        yield return new WaitForSeconds(2f);
+        DestroyEnemy();
+    }
+
+    //Health Functions
 
     public void CheckHealth()
     {
         states = (health <= 0) ? EnemyStates.Die : EnemyStates.Idle;
+    }
+
+    float CalculateHealth()
+    {
+        return health / maxHealth;
     }
 
     public void PlayAnim(string anim)
@@ -90,12 +121,14 @@ public class Enemy : MonoBehaviour
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
         if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
-            walkPointSet = true;
+            StartCoroutine(Transition());
     }
 
     private void ChasePlayer()
     {
         agent.SetDestination(player.position);
+        healthBarUI.SetActive(true);
+
         PlayAnim("Chase");
     }
 
@@ -118,5 +151,13 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
+    private void OnTriggerEnter(Collider collider)
+    {
+        if(collider.tag == "Arrow")
+        {
+            TakeDamage(50);
+            getAttacked = true;
+        }
+    }
 
 }

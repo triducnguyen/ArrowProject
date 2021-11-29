@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections;
 
 public class Arrow : XRGrabInteractable
 {
@@ -117,6 +118,13 @@ public class Arrow : XRGrabInteractable
             TogglePhysics(false);
             ChildArrow(hit);
             CheckForHittable(hit);
+
+            if(hit.collider.tag == "Enemy")
+            {
+                Destroy(this.gameObject);
+            }
+
+            StartCoroutine(WaitingToDestroy());
         }
 
         return hit.collider != null;
@@ -146,13 +154,12 @@ public class Arrow : XRGrabInteractable
         if (hittable != null)
             hittable.Hit(this);
     }
-
-    private void OnCollisionEnter(Collision collision)
+    public IEnumerator WaitingToDestroy()
     {
-        if(collision.transform.tag == "Enemy")
-        {
-            collision.gameObject.GetComponent<Enemy>().TakeDamage(10);
-            Debug.Log("hit");
-        }
+        yield return new WaitForSeconds(4f);
+        Destroy(this.gameObject);
+
     }
+
+
 }
