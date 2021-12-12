@@ -11,15 +11,18 @@ public class Enemy : MonoBehaviour
     public float health;
     public float maxHealth;
     public float hitDamage;
+    public float xp;
     public EnemyStates states;
     public Animator animator;
     public GameObject healthBarUI;
     public Slider slider;
+    public Player mainPlayer;
 
     [Header("AI")]
     public NavMeshAgent agent;
     public Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
+
 
     //Patroling
     public Vector3 walkPoint;
@@ -37,25 +40,28 @@ public class Enemy : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        mainPlayer = FindObjectOfType<Player>();
         health = maxHealth;
         slider.value = CalculateHealth();
         healthBarUI.SetActive(false);
+        //hitBox.SetActive(false);
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         CheckHealth();
-        if(states == EnemyStates.Die)
+        if (states == EnemyStates.Die)
         {
 
             healthBarUI.SetActive(false);
             StartCoroutine(StartDieAnimation());
             agent.isStopped = true;
-        }  
+        }
         //Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
+        //Debug.Log(playerInAttackRange + " " + playerInSightRange);
         if (playerInAttackRange && playerInSightRange) AttackPlayer();
         else if ((playerInSightRange && !playerInAttackRange) || getAttacked) ChasePlayer();
         else if (!playerInSightRange && !playerInAttackRange) Patroling();
@@ -137,6 +143,7 @@ public class Enemy : MonoBehaviour
         agent.SetDestination(transform.position);
 
         transform.LookAt(player);
+
         if (!alreadyAttack)
         {
             PlayAnim("Attack");
@@ -153,6 +160,7 @@ public class Enemy : MonoBehaviour
     private void ResetAttack()
     {
         alreadyAttack = false;
+
     }
 
     public void TakeDamage(int damage)
@@ -171,6 +179,15 @@ public class Enemy : MonoBehaviour
         {
             TakeDamage(50);
             getAttacked = true;
+        }
+    }
+
+    public void ActivateHit()
+    {
+        Collider[] collider = Physics.OverlapSphere(transform.position, 4f, whatIsPlayer);
+        if (collider.Length > 0)
+        {
+            mainPlayer.Health -= 10f;
         }
     }
 

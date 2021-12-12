@@ -71,7 +71,6 @@ public class TeleportManager : MonoBehaviour
         _isActivate = true;
         reticle.SetActive(true);
 
-        Debug.Log("activating");
     }
 
     private void OnTeleportCancel(InputAction.CallbackContext context)

@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Ground
   - Arrow
+  - HitBox
+  - Slime
   layers:
   - Default
   - TransparentFX
@@ -24,7 +26,7 @@ TagManager:
   - Player
   - Enemy
   - Interactable
-  - 
+  - New Player
   - 
   - 
   - 
