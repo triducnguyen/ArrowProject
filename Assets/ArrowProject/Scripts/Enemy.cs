@@ -8,21 +8,32 @@ public class Enemy : MonoBehaviour
 {
     public enum EnemyStates { Idle,Attack,Die}
     [Header("Settings")]
+    public int level;
     public float health;
     public float maxHealth;
     public float hitDamage;
+    public float hitDamageDiff;
     public float xp;
+    public float xpDiff;
+    public float gold;
+    public float goldDiff;
     public EnemyStates states;
     public Animator animator;
+    public Player mainPlayer;
+
+    [Header("UI")]
     public GameObject healthBarUI;
     public Slider slider;
-    public Player mainPlayer;
+    public Text damageTaken;
 
     [Header("AI")]
     public NavMeshAgent agent;
     public Transform player;
     public LayerMask whatIsGround, whatIsPlayer;
 
+
+    //private variable
+    private Coroutine currentCoroutine;
 
     //Patroling
     public Vector3 walkPoint;
@@ -41,9 +52,11 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         mainPlayer = FindObjectOfType<Player>();
+        maxHealth = maxHealth * level;
         health = maxHealth;
         slider.value = CalculateHealth();
         healthBarUI.SetActive(false);
+        damageTaken.gameObject.SetActive(false);
         //hitBox.SetActive(false);
     }
 
@@ -65,6 +78,11 @@ public class Enemy : MonoBehaviour
         if (playerInAttackRange && playerInSightRange) AttackPlayer();
         else if ((playerInSightRange && !playerInAttackRange) || getAttacked) ChasePlayer();
         else if (!playerInSightRange && !playerInAttackRange) Patroling();
+
+        if (healthBarUI.activeSelf)
+        {
+            healthBarUI.transform.LookAt(player.position);
+        }
 
         slider.value = CalculateHealth();
 
@@ -171,15 +189,37 @@ public class Enemy : MonoBehaviour
     private void DestroyEnemy()
     {
         Destroy(gameObject);
+        mainPlayer.Xperiences += Random.Range((int)(xp - xpDiff) , (int)(xp + xpDiff));
+        mainPlayer.Golds += Random.Range((int)(gold - goldDiff), (int)(gold + goldDiff));
     }
 
     private void OnTriggerEnter(Collider collider)
     {
         if(collider.tag == "Arrow")
         {
-            TakeDamage(50);
+            int damageDeal = mainPlayer.DealDamage();
+            TakeDamage(damageDeal);
+            if(currentCoroutine != null)
+            {
+                StopCoroutine(currentCoroutine);
+                StartCoroutine(DamageText(damageDeal));
+            }
+            else
+            {
+                currentCoroutine = StartCoroutine(DamageText(damageDeal));
+            }
             getAttacked = true;
         }
+    }
+
+    private IEnumerator DamageText(int damage)
+    {
+        damageTaken.gameObject.SetActive(true);
+        damageTaken.text = "- " + damage;
+        yield return new WaitForSeconds(2f);
+        damageTaken.gameObject.SetActive(false);
+        damageTaken.text = "";
+
     }
 
     public void ActivateHit()
@@ -187,7 +227,7 @@ public class Enemy : MonoBehaviour
         Collider[] collider = Physics.OverlapSphere(transform.position, 4f, whatIsPlayer);
         if (collider.Length > 0)
         {
-            mainPlayer.Health -= 10f;
+            mainPlayer.Health -= Random.Range((int)(hitDamage - hitDamageDiff)*level,(int)(hitDamage + hitDamageDiff)*level);
         }
     }
 

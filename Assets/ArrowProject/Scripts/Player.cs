@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     public Text HP;
     public Text levelText;
     public Text XP;
+    public Text Gold;
+    public Text AttackRange;
     public Slider hpSlider;
     public Slider xpSlider;
 
@@ -27,14 +29,19 @@ public class Player : MonoBehaviour
     //public and private variables
     public float additionHitDamage;
     public float Health { get => health; set => health = value; }
+    public float Xperiences { get => xp; set => xp = value; }
+    public float Golds { get => golds; set => golds = value; }
 
     [SerializeField] private int level;
     [SerializeField] private float maxHealth = 100f;
     [SerializeField] private float health;
     [SerializeField] private float xp = 0f;
-    [SerializeField] private float maxXP = 100f;
-    [SerializeField] private float baseHitDamage;
-    [SerializeField] private float hitDamage;
+    [SerializeField] private float golds;
+    [SerializeField] private float maxXP = 20f;
+    [SerializeField] private float minAttack;
+    [SerializeField] private float maxAttack;
+    private float baseAttack;
+    private float hitDamage;
     private bool openMenu = false;
     private bool takingDamage = false;
 
@@ -43,8 +50,12 @@ public class Player : MonoBehaviour
     {
         maxHealth = 100f + (level * 0.1f * 100f);
         health = maxHealth;
-        baseHitDamage = 2f;
-        additionHitDamage = bow.damage + arrow.damage;
+        baseAttack = 2f;
+        minAttack = baseAttack;
+        maxAttack = minAttack * 2;
+        minAttack += bow.damage + arrow.damage;
+        maxAttack += bow.damage + arrow.damage;
+        
 
         //UI action
         var activate = actionAsset.FindActionMap("XRI LeftHand").FindAction("PlayerUI");
@@ -52,7 +63,7 @@ public class Player : MonoBehaviour
         activate.performed += OnMenuActivate;
 
         //Hit Damage Range
-        hitDamage = Random.Range(baseHitDamage + (additionHitDamage/2), baseHitDamage + additionHitDamage);
+        hitDamage = Random.Range((int)minAttack, (int)maxAttack);
     }
 
     private void Update()
@@ -60,13 +71,22 @@ public class Player : MonoBehaviour
         CheckHealth();
         HP.text = health + "/" + maxHealth;
         hpSlider.value = CalculateHealth();
+        XP.text = "XP: "+ xp + "/" + maxXP;
+        xpSlider.value = CalculateXP();
         levelText.text = "Level: " + level;
-
+        Gold.text = "Golds: " + golds;
+        AttackRange.text = "Min Attack - Max Attack: " + minAttack + " - " + maxAttack;
+        CheckLevelUp();
     }
 
     public float CalculateHealth()
     {
         return health / maxHealth;
+    }
+
+    public float CalculateXP()
+    {
+        return xp / maxXP;
     }
 
     //Check Health of Player
@@ -94,7 +114,6 @@ public class Player : MonoBehaviour
     {
         takingDamage = true;
         StartCoroutine(TakingDamageBySec(sec, damage));
-        Debug.Log("Attacking");
     }
 
     private IEnumerator TakingDamageBySec(float sec, float damage)
@@ -103,6 +122,31 @@ public class Player : MonoBehaviour
         health -= damage;
         takingDamage = false;
     }
+
+    private void CheckLevelUp()
+    {
+        if(xp >= maxXP)
+        {
+            level++;
+            maxXP *= 2;
+            baseAttack *= 2;
+            UpdateStats();
+        }
+    }
+
+    private void UpdateStats()
+    {
+        minAttack = baseAttack;
+        maxAttack = minAttack * 2;
+        minAttack += bow.damage + arrow.damage;
+        maxAttack += bow.damage + arrow.damage;
+    }
+
+    public int DealDamage()
+    {
+        return Random.Range((int)minAttack, (int)maxAttack);
+    }
+
 
     private void OnDrawGizmos()
     {

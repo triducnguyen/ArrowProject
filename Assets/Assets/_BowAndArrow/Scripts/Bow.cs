@@ -3,7 +3,7 @@
 public class Bow : XRGrabInteractable
 {
     private Notch notch = null;
-    public float damage = 4;
+    public float damage = 4f;
 
 
     protected override void Awake()
